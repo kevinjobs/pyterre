@@ -1,24 +1,34 @@
+from typing import Optional
 from usine_ramper.output import Output
 
 
 class Ramper:
     def __init__(self):
-        self.op: Output = None
+        self.data = None
+        self.op: Optional[Output] = None
 
     def run(self):
-        pass
+        self.before_start()
+        self.data = self.start()
+        self.after_start()
+
+        self.before_filter()
+        self.filter()
+        self.after_filter()
+
+        self.before_output()
+        self.output()
+        self.after_output()
 
     def start(self):
-        pass
+        raise NotImplementedError
 
     def filter(self):
         pass
 
     def output(self, **kw):
-        op = Output(**kw)
-        self.before_output()
+        op = Output(self.data, **kw)
         op.save()
-        self.after_output()
 
     def before_start(self):
         pass
@@ -38,8 +48,8 @@ class Ramper:
     def after_output(self):
         pass
 
-    def to_data(self):
-        pass
+    def to_dict(self):
+        return self.op.to_dict()
 
     def to_json(self):
-        pass
+        return self.op.to_json()
