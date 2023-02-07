@@ -1,4 +1,4 @@
-from pyterre.util import save_json
+from terre.util import save_json
 from datetime import datetime
 
 

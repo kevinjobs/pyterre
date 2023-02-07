@@ -1,5 +1,5 @@
 from typing import Optional
-from pyterre.ramper.output import Output
+from terre.ramper.output import Output
 
 
 class Ramper:

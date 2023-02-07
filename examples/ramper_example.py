@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from pyterre.ramper import Ramper
+from terre.ramper import Ramper
 
 
 class MyRamper(Ramper):
