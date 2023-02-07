@@ -1,7 +1,7 @@
 from selenium.webdriver import Chrome
-from usine.crawler.browser import Browser
-from usine.config import CHROME_BINARY
-from usine.config import STORE_PATH
+from pyterre.crawler.browser import Browser
+from pyterre.config import CHROME_BINARY
+from pyterre.config import STORE_PATH
 
 
 def test_browser():

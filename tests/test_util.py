@@ -1,4 +1,4 @@
-from usine.util.array import concat
+from pyterre.util.array import concat
 
 
 def test_concat():
