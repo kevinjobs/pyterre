@@ -2,8 +2,7 @@ from os import path
 from os import makedirs
 
 
-SRC_PATH = path.dirname(__file__)
-PROJECT_PATH = path.join(SRC_PATH, "..")
+PROJECT_PATH = path.join(path.dirname(__file__), "..")
 BIN_PATH = path.join(PROJECT_PATH, "bin")
 STORE_PATH = path.join(PROJECT_PATH, "store")
 

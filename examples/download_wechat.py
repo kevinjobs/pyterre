@@ -2,11 +2,13 @@ from os import path
 from time import sleep
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
-from crawler.browser import Browser
-from crawler.output import Output
-from config import CHROME_BINARY
-from config import STORE_PATH
-from util.array import concat
+from terre.browser import Browser
+from terre.util import save_json
+from terre.util import read_json
+from terre.util import read_file
+from terre.util.array import concat
+from terre.config import CHROME_BINARY
+from terre.config import STORE_PATH
 
 
 def fetch_publish_lists(start=1, end=30):
@@ -15,9 +17,10 @@ def fetch_publish_lists(start=1, end=30):
       - start: start page
       - end: end page
     """
+    home_url = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN"
     browser = Browser(CHROME_BINARY).base()
     browser.set_window_size(width=1400, height=1000, windowHandle="current")
-    browser.get("https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN")
+    browser.get(home_url)
 
     try:
         msg_content = browser.find_element(By.CLASS_NAME, "msg_content")
@@ -34,28 +37,35 @@ def fetch_publish_lists(start=1, end=30):
         lists = extract_lists(browser)
         all_lists = concat(all_lists, lists)
         goto_next_page(browser)
-    Output.save_json(path.join(STORE_PATH, "publish_list.json"), all_lists)
+    save_json(path.join(STORE_PATH, "publish_list.json"), all_lists)
 
 
 def extract_lists(browser: Chrome):
     data = []
     publish_content = browser.find_element(By.CLASS_NAME, "publish_content")
-    post_items = publish_content.find_elements(By.CLASS_NAME, "weui-desktop-block")
+    post_items = publish_content \
+        .find_elements(By.CLASS_NAME, "weui-desktop-block")
     for p in post_items:
-        post_date = p.find_element(By.CLASS_NAME, "weui-desktop-mass__time").text
+        post_date = p.find_element(
+            By.CLASS_NAME, "weui-desktop-mass__time").text
         post_status = p.find_element(By.CLASS_NAME, "js_status_txt").text
 
         posts = p.find_elements(By.CLASS_NAME, "publish_hover_content")
 
         for post in posts:
-            post_info = post.find_element(By.CLASS_NAME, "weui-desktop-mass-appmsg__title")
+            post_info = post \
+                .find_element(By.CLASS_NAME, "weui-desktop-mass-appmsg__title")
             post_url = post_info.get_attribute("href")
             post_title = post_info.find_elements(By.TAG_NAME, "span")[0].text
 
-            view_counts = post.find_elements(By.CLASS_NAME, "weui-desktop-tooltip__wrp")
+            view_counts = post \
+                .find_elements(By.CLASS_NAME, "weui-desktop-tooltip__wrp")
 
             try:
-                counts = view_counts[0].find_element(By.CLASS_NAME, "weui-desktop-mass-media__data__inner").text
+                counts = view_counts[0].find_element(
+                            By.CLASS_NAME,
+                            "weui-desktop-mass-media__data__inner"
+                        ).text
             except Exception as e:
                 print(e)
                 counts = 0
@@ -77,7 +87,10 @@ def goto_publish_page(browser: Chrome):
 
 
 def goto_next_page(browser: Chrome):
-    paging = browser.find_element(By.CLASS_NAME, "weui-desktop-pagination__nav")
+    paging = browser.find_element(
+        By.CLASS_NAME,
+        "weui-desktop-pagination__nav"
+    )
     prev_next = paging.find_elements(By.CLASS_NAME, "weui-desktop-btn_mini")
     if len(prev_next) == 1:
         prev_next[0].click()
@@ -110,9 +123,13 @@ def wait_():
 
 
 def save_pdf():
-    lists = Output.read_json(path.join(STORE_PATH, "publish_lists.json"))
-    scroll_script = Output.read_file(path.join(STORE_PATH, "scroll.js")).replace("\n", "")
-    show_msg = Output.read_file(path.join(STORE_PATH, "show_msg.js")).replace("\n", "")
+    publist_lists = path.join(STORE_PATH, "publish_lists.json")
+    scroll_js = path.join(STORE_PATH, "scroll.js")
+    show_msg_js = path.join(STORE_PATH, "show_msg.js")
+
+    lists = read_json(publist_lists)
+    scroll_script = read_file(scroll_js).replace("\n", "")
+    show_msg = read_file(show_msg_js).replace("\n", "")
 
     pdf_path = path.join(STORE_PATH, "pdf")
     browser = Browser(CHROME_BINARY).printer(pdf_path)
@@ -134,7 +151,9 @@ def save_pdf():
 
             sleep(seconds)
 
-            browser.execute_script('document.title="' + file_title + '";window.print();')
+            browser.execute_script(
+                'document.title="' + file_title + '";window.print();'
+            )
         else:
             print("exists: ", file_path)
 
