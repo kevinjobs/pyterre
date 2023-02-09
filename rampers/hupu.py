@@ -5,12 +5,12 @@ from terre.ramper import RamperItem
 from terre.ramper import StringField
 
 
-class MyItem(RamperItem):
+class HupuItem(RamperItem):
     title = StringField()
     link = StringField()
 
 
-class MyRamper(Ramper):
+class HupuRamper(Ramper):
     def __init__(self):
         super().__init__()
 
@@ -23,7 +23,7 @@ class MyRamper(Ramper):
         items = list_container.find_all("div", class_="list-item-wrap")
 
         for item in items:
-            my_item = MyItem()
+            my_item = HupuItem()
             info = item.find("div", class_="t-info")
             cate = item.find("div", class_="t-label")
             if info:
@@ -32,8 +32,3 @@ class MyRamper(Ramper):
                 my_item.title = title
                 my_item.link = link
                 yield my_item
-
-
-if __name__ == "__main__":
-    mr = MyRamper()
-    print(mr.to_json())
