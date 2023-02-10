@@ -1,5 +1,5 @@
 from selenium.webdriver import Chrome
-from terre.crawler.browser import Browser
+from terre.browser import Browser
 from terre.config import CHROME_BINARY
 from terre.config import STORE_PATH
 
