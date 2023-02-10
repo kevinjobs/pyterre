@@ -7,7 +7,7 @@ from terre.config import STORE_PATH
 def args():
     ap = ArgumentParser()
     ap.add_argument("cmd", help="input command to run.")
-    ap.add_argument("-r", "--ramper", help="input a ramper name.")
+    ap.add_argument("-r", "--ramper", help="ramper name. use 'all' to run all rampers.")
     return ap.parse_args()
 
 
