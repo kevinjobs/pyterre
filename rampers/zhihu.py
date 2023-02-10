@@ -27,7 +27,7 @@ class ZhihuRamper(Ramper):
             my_item = ZhihuItem()
             body = item.find("div", class_="HotList-itemBody")
             item_title = body.find("div", class_="HotList-itemTitle")
-            item_excerpt = body.find("div", class_="HotList-itemExcerpt")
+            # item_excerpt = body.find("div", class_="HotList-itemExcerpt")
             my_item.title = item_title.get_text()
-            my_item.excerpt = item_excerpt.get_text()
+            # my_item.excerpt = item_excerpt.get_text()
             yield my_item
