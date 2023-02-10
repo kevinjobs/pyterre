@@ -1,3 +1,4 @@
+"""
 from selenium.webdriver import Chrome
 from terre.browser import Browser
 from terre.config import CHROME_BINARY
@@ -10,3 +11,5 @@ def test_browser():
     printer = browser.printer(STORE_PATH)
     assert isinstance(base, Chrome)
     assert isinstance(printer, Chrome)
+
+"""
