@@ -1,5 +1,5 @@
 from typing import Generator
-from terre.util import save_json as save
+from terre.util.fs import save_json as save
 from .item import RamperItem
 
 

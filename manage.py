@@ -24,11 +24,11 @@ def run_ramper(name: str):
 
     if name == "all":
         for k, _ in rampers.items():
-            filepath = path.join(STORE_PATH, f"{k}-{now_stamp()}.json")
+            filepath = path.join(STORE_PATH, f"{k}-{now_stamp()}")
             rampers[k]().save_json(filepath)
         return
 
-    filepath = path.join(STORE_PATH, f"{name}-{now_stamp()}.json")
+    filepath = path.join(STORE_PATH, f"{name}-{now_stamp()}")
     rampers.get(name)().save_json(filepath)
 
 
